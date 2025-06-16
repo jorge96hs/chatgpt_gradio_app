@@ -7,9 +7,15 @@ client = OpenAI()
 
 
 def get_chat_response(message, history):
-    history = history or [{'role': 'system', 'content': 'You are a helpful assistant.'}]
+    history = history or [{'role': 'developer', 'content': 'You are a helpful assistant.'}]
 
-    history += [{'role': 'user', 'content': message}]
+    system_message = 'You are a helpful assistant'
+
+    # if history:
+    #     if history[0].get('role') != 'developer':
+    #         history += [{'role': 'developer', 'content': system_message}]
+
+    messages = history + [{'role': 'user', 'content': message}]
 
     # completion = client.chat.completions.create(
     #     model = 'gpt-4.1',
@@ -19,5 +25,5 @@ def get_chat_response(message, history):
 
     response = 'No'  # completion.choices[0].message
 
-    history += [{'role': 'assistant', 'content': response}]  # [{'role': response.role, 'content': response.content}]
-    return response, history  # response.content
+    messages += [{'role': 'assistant', 'content': response}]  # [{'role': response.role, 'content': response.content}]
+    return response, messages  # response.content
