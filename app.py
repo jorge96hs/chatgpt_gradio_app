@@ -4,8 +4,8 @@ from source.chat_storage import save_chat, list_saved_chats, load_chat
 
 
 def chat(message, history):
-    response, history = get_chat_response(message, history)
-    return response, history
+    response, updated_history = get_chat_response(message, history)
+    return updated_history, updated_history,  # response, history
 
 
 def save_current_chat(history_state):
@@ -46,19 +46,19 @@ if __name__ == '__main__':
                     height = 300
                 )
 
-                gr.ChatInterface(
-                    fn = chat,
-                    title = '💬 ChatGPT Gradio App',
-                    type = 'messages',
-                    chatbot = chatbot,
-                    additional_outputs = state
-                )
+                # gr.ChatInterface(
+                #     fn = chat,
+                #     title = '💬 ChatGPT Gradio App',
+                #     type = 'messages',
+                #     chatbot = chatbot,
+                #     additional_outputs = state
+                # )
 
-                # txt_input = gr.Textbox(label = 'Enter your message here')
-                # send_btn = gr.Button('Send')
+                txt_input = gr.Textbox(label = 'Enter your message here')
+                send_btn = gr.Button('Send')
 
         # Functional bindings
-        # send_btn.click(chat, [txt_input, state], [chatbot, state])
+        send_btn.click(chat, [txt_input, state], [chatbot, state])
         save_button.click(save_current_chat, [state], [save_status])
         load_button.click(load_selected_chat, [chat_selector], [chatbot, state])
         refresh_button.click(refresh_dropdown, [], [chat_selector])
