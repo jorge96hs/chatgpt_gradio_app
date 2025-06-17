@@ -5,7 +5,7 @@ from source.chat_storage import save_chat, list_saved_chats, load_chat
 
 def chat(message, history):
     response, updated_history = get_chat_response(message, history)
-    return response, updated_history  # response, history
+    return updated_history, updated_history  # response, history
 
 
 def save_current_chat(history_state):
@@ -41,37 +41,32 @@ if __name__ == '__main__':
             # Main chat area
             with gr.Column(scale = 4):
                 gr.Markdown("## 💬 ChatGPT Gradio App")
+
                 chatbot = gr.Chatbot(
                     type = 'messages',
                     height = 300
                 )
 
-                gr.ChatInterface(
-                    fn = chat,
-                    title = '💬 ChatGPT Gradio App',
-                    type = 'messages',
-                    chatbot = chatbot,
-                    additional_outputs = state
-                )
+                txt_input = gr.Textbox(label = 'Enter your message here')
+                txt_input.submit(chat, [txt_input, state], [chatbot, state]).then(lambda: "", None, [txt_input])
 
-                # txt_input = gr.Textbox(label = 'Enter your message here')
-                # txt_input.submit(chat, [txt_input, state], [chatbot, state])
-                #
-                # send_btn = gr.Button('Send')
-                # clear_btn = gr.Button(value = 'Clear')
+                # gr.ChatInterface(
+                #     fn = chat,
+                #     title = '💬 ChatGPT Gradio App',
+                #     type = 'messages',
+                #     chatbot = chatbot,
+                #     textbox = txt_input,
+                #     additional_outputs = state
+                # )
+
+                send_btn = gr.Button('Send')
+                # clear_btn = gr.ClearButton(txt_input, value = 'Clear')
                 # clear_btn.click(clear, [], [])
 
         # Functional bindings
-        # send_btn.click(chat, [txt_input, state], [chatbot, state])
+        send_btn.click(chat, [txt_input, state], [chatbot, state]).then(lambda: "", None, [txt_input])
         save_button.click(save_current_chat, [state], [save_status])
         load_button.click(load_selected_chat, [chat_selector], [chatbot, state])
         refresh_button.click(refresh_dropdown, [], [chat_selector])
-
-
-    # demo = gr.ChatInterface(
-    #     fn = chat,
-    #     title = 'Mini ChatGPT',
-    #     type = 'messages'
-    # )
 
     demo.launch()
