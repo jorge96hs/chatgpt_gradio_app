@@ -10,7 +10,7 @@ def get_chat_response(
         message,
         history,
         system_message = 'You are a helpful assistant',
-        model = 'gpt-4.1',
+        model = 'gpt-5.1-mini',
         temperature = 0.7
 ):
     history = history or []  # [{'role': 'developer', 'content': 'You are a helpful assistant.'}]
@@ -18,6 +18,9 @@ def get_chat_response(
 
     if messages[0].get('role') != 'developer':
         messages = [{'role': 'developer', 'content': system_message}] + messages
+
+    if model.split('-')[1] not in ['4.1']:
+        temperature = 1
 
     completion = client.chat.completions.create(
         model = model,
