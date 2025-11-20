@@ -55,8 +55,8 @@ if __name__ == '__main__':
 
                 model_dropdown = gr.Dropdown(
                     label = 'Model',
-                    choices = ['gpt-4.1', 'gpt-4o', 'gpt-3.5-turbo'],  # update as needed
-                    value = 'gpt-4.1'
+                    choices = ['gpt-5-mini', 'gpt-5-nano', 'gpt-5.1', 'gpt-4.1'],  # update as needed
+                    value = 'gpt-5-mini'
                 )
 
                 temp_slider = gr.Slider(
